@@ -1,2 +1,2 @@
-# MultiObjectivePathPlay.go
-A collection of multi-objective path planning algorithms.
+# GraphPathPlanning.go
+A collection of single- or multi-objective path planning algorithms.
