@@ -290,3 +290,22 @@ func (pg *PositionGraph) AddEdgeBetween(from Node, to Node) PGEdge {
 	// Return edge
 	return e
 }
+
+/*
+GetNodeAt
+Description:
+
+	Returns the node with the given position.
+*/
+func (pg *PositionGraph) GetNodeAt(position *mat.VecDense) *Node {
+	// Constants
+
+	// Algorithm
+	for _, n := range pg.nodes {
+		if mat.Equal(n.Position, position) {
+			return n
+		}
+	}
+
+	return nil
+}
