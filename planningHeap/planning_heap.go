@@ -1,6 +1,6 @@
-package GraphPathPlanning_go
+package planningHeap
 
-type PlanningHeap []*PlanningNode
+type PlanningHeap []PlanningNode
 
 func (ph PlanningHeap) Len() int { return len(ph) }
 func (ph PlanningHeap) Less(i, j int) bool {
@@ -16,7 +16,7 @@ func (ph PlanningHeap) Swap(i, j int) {
 	ph[i], ph[j] = ph[j], ph[i]
 }
 
-func (ph *PlanningHeap) Push(x interface{}) {
+func (ph *PlanningHeap) Push(x any) {
 	//Description:
 	//	Adds a planning node to the heap pointed to by ph.
 	//	Should automatically sort using our Less() method.
@@ -25,7 +25,7 @@ func (ph *PlanningHeap) Push(x interface{}) {
 	*ph = append(*ph, item)
 }
 
-func (ph *PlanningHeap) Pop() interface{} {
+func (ph *PlanningHeap) Pop() any {
 	//Description:
 	//	Retrieves the element with the lowest HeuristicCost.
 	//	Tries to avoid memor leaks.
