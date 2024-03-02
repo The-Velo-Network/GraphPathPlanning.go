@@ -7,7 +7,7 @@ func (ph PlanningHeap) Less(i, j int) bool {
 	//Description:
 	//	Returns true iff ph[i] < ph[j] in terms of the Cost
 
-	return (*ph[i]).Cost() < (*ph[j]).Cost()
+	return ph[i].Cost() < ph[j].Cost()
 }
 func (ph PlanningHeap) Swap(i, j int) {
 	//Description:
@@ -21,7 +21,7 @@ func (ph *PlanningHeap) Push(x any) {
 	//	Adds a planning node to the heap pointed to by ph.
 	//	Should automatically sort using our Less() method.
 
-	item := x.(*PlanningNode)
+	item := x.(PlanningNode)
 	*ph = append(*ph, item)
 }
 
