@@ -1,5 +1,7 @@
 package positionGraph
 
+import "fmt"
+
 /*
 errors.go
 Description:
@@ -16,5 +18,8 @@ type NodeNotFoundError struct {
 }
 
 func (e NodeNotFoundError) Error() string {
-	return "Node with ID " + string(e.ID) + " not found"
+	return fmt.Sprintf(
+		"Node with ID %v not found",
+		e.ID,
+	)
 }
