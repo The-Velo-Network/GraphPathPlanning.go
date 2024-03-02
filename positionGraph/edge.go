@@ -85,6 +85,6 @@ func (e *PGEdge) Weight() float64 {
 
 	// Algorithm
 	var distance *mat.VecDense = mat.NewVecDense(from.Position.Len(), nil)
-	distance.SubVec(to.Position, to.Position)
+	distance.SubVec(to.Position, from.Position)
 	return mat.Norm(distance, 2)
 }
