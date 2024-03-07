@@ -86,7 +86,7 @@ func (pn *PlanningNode) CalculateCostToGo() float64 {
 		pn.PreviousInPlan.CurrentGraphNode.ID(),
 		pn.CurrentGraphNode.ID(),
 	)
-	return pn.PreviousInPlan.Cost() + lastEdge.Weight()
+	return pn.PreviousInPlan.CostToGo + lastEdge.Weight()
 
 }
 
