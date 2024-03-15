@@ -1,8 +1,10 @@
 package aStar
 
 import (
+	"github.com/GraphPathPlanning.go/gppErrors"
 	"github.com/GraphPathPlanning.go/planningHeap"
 	"gonum.org/v1/gonum/graph"
+	"slices"
 )
 
 /*
@@ -12,23 +14,32 @@ Description:
 	Defines how plans are generated with the A* algorithm.
 */
 
+// ================
+// Type Definitions
+// ================
+
+type Plan struct {
+	Sequence []graph.Node // The sequence of nodes in the path (start @ 0, and end @ len(Sequence) - 1
+	CostToGo float64
+}
+
 // =======
 // Functions
 // =======
 
 /*
-Plan
+FindPlan
 Description:
 
 	Generates a plan using the A* algorithm.
 	To move from node start to node end through the graph
 	g.
 */
-func Plan(
+func FindPlan(
 	g graph.WeightedUndirected,
 	start, end int64,
-	heuristic func(int64, graph.WeightedUndirected) float64,
-) (*PlanningNode, error) {
+	heuristic func(*PlanningNode) float64,
+) (*Plan, error) {
 	// Constants
 
 	// Create initial planning node and heap
@@ -50,7 +61,7 @@ func Plan(
 
 		// If we have reached the end, return the plan
 		if pn.CurrentGraphNode.ID() == end {
-			return pn, nil
+			return UnrollPlanFrom(pn), nil
 		}
 
 		// Otherwise, expand the node
@@ -63,6 +74,44 @@ func Plan(
 
 	}
 
-	return nil, nil
+	return nil, gppErrors.NoPathFound{g}
 
+}
+
+/*
+UnrollPlanFrom()
+Description:
+
+	Unrolls a plan from a given planning node.
+	Hopefully, you try this only on a planning node
+	that reaches the end.
+*/
+func UnrollPlanFrom(pn *PlanningNode) *Plan {
+	// Check to see if plan is empty
+	if pn == nil {
+		return nil
+	}
+
+	// Iterate through each of the nodes in the plan
+	current := pn
+	var reversedPlan []graph.Node
+	for current != nil {
+		// Add current node (in graph) to plan
+		reversedPlan = append(
+			reversedPlan,
+			current.Graph.Node(current.CurrentGraphNode.ID()),
+		)
+
+		// Update current
+		current = current.PreviousInPlan
+	}
+
+	// Return result
+	forwardPlan := reversedPlan
+	slices.Reverse(forwardPlan)
+
+	return &Plan{
+		Sequence: forwardPlan,
+		CostToGo: pn.CostToGo,
+	}
 }

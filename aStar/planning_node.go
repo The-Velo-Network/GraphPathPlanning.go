@@ -51,7 +51,7 @@ Description:
 	Calculates the cost to go and the heuristic cost for the current node.
 */
 func (pn *PlanningNode) UpdateCosts(
-	heuristic func(int64, graph.WeightedUndirected) float64,
+	heuristic func(node *PlanningNode) float64,
 ) {
 	// Setup
 
@@ -103,9 +103,8 @@ Notes:
 
   - This function assumes that the CostToGo has already been defined.
 */
-func (pn *PlanningNode) CalculateHeuristicCost(heuristic func(int64, graph.WeightedUndirected) float64) float64 {
-
-	return heuristic(pn.CurrentGraphNode.ID(), pn.Graph) + pn.CostToGo
+func (pn *PlanningNode) CalculateHeuristicCost(heuristic func(*PlanningNode) float64) float64 {
+	return heuristic(pn)
 }
 
 /*
@@ -115,7 +114,7 @@ Description:
 	"Expands" from the current graph node to all of the adjacent nodes.
 	Returns a slice of PlanningNodes that represent the expanded nodes.
 */
-func (pn *PlanningNode) Expand(heuristic func(int64, graph.WeightedUndirected) float64) []*PlanningNode {
+func (pn *PlanningNode) Expand(heuristic func(*PlanningNode) float64) []*PlanningNode {
 	// Setup
 
 	// Create a slice to hold the expanded nodes

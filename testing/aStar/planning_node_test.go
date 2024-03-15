@@ -4,7 +4,6 @@ import (
 	"github.com/GraphPathPlanning.go/aStar"
 	"github.com/GraphPathPlanning.go/positionGraph"
 	"gonum.org/v1/gonum/floats"
-	"gonum.org/v1/gonum/graph"
 	"gonum.org/v1/gonum/mat"
 	"math"
 	"testing"
@@ -152,15 +151,18 @@ func TestPlanningNode_UpdateCosts1(t *testing.T) {
 	}
 	goalIdx := int64(3)
 
-	simpleHeuristic := func(currentIdx int64, wu graph.WeightedUndirected) float64 {
+	simpleHeuristic := func(currPN *aStar.PlanningNode) float64 {
 		// Setup
+		currentIdx := currPN.CurrentGraphNode.ID()
+
+		wu := currPN.Graph
 		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
 		currNode := wu.Node(currentIdx).(*positionGraph.Node)
 
 		// Algorithm
 		var diff mat.VecDense
 		diff.SubVec(goalNode.Position, currNode.Position)
-		return mat.Norm(&diff, 2)
+		return mat.Norm(&diff, 2) + currPN.CostToGo
 	}
 
 	// Algorithm
@@ -192,8 +194,11 @@ func TestPlanningNode_UpdateCosts2(t *testing.T) {
 	g := CreateTestGraph_PlanningNodeTest2()
 
 	goalIdx := int64(3)
-	simpleHeuristic := func(currentIdx int64, wu graph.WeightedUndirected) float64 {
+	simpleHeuristic := func(currPN *aStar.PlanningNode) float64 {
 		// Setup
+		currentIdx := currPN.CurrentGraphNode.ID()
+		wu := currPN.Graph
+
 		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
 		currNode := wu.Node(currentIdx).(*positionGraph.Node)
 
@@ -238,5 +243,137 @@ func TestPlanningNode_UpdateCosts2(t *testing.T) {
 	// Heursitic Cost should be greater than CostToGo
 	if pn3.HeuristicCost <= pn3.CostToGo {
 		t.Errorf("Expected heuristic cost to be greater than 0.0, but got %f", pn2.HeuristicCost)
+	}
+}
+
+/*
+TestPlanningNode_Expand1
+Description:
+
+	This function tests that a node that is not connected to
+	anything in the graph returns no planning nodes in the
+	result of the expand function.
+*/
+func TestPlanningNode_Expand1(t *testing.T) {
+	// Setup Graph
+	g := positionGraph.NewPositionGraph()
+
+	n1 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{1.0, 2.0}),
+	)
+	n2 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{1.0, 3.0}),
+	)
+	n3 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{2.0, 3.0}),
+	)
+
+	g.AddEdgeBetween(n2, n3)
+
+	// Setup planning node to expand
+	pn4 := aStar.PlanningNode{
+		Graph:            g,
+		CurrentGraphNode: &n1,
+		PreviousInPlan:   nil,
+		CostToGo:         0.0,
+		HeuristicCost:    0.0,
+	}
+
+	// Setup heuristic
+	goalIdx := n3.ID()
+	simple_heuristic := func(currPN *aStar.PlanningNode) float64 {
+		// Setup
+		currentIdx := currPN.CurrentGraphNode.ID()
+		wu := currPN.Graph
+
+		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+
+		// Algorithm
+		var diff mat.VecDense
+		diff.SubVec(goalNode.Position, currNode.Position)
+		return mat.Norm(&diff, 2) + currPN.CostToGo
+	}
+
+	// Compute expansion
+	result := pn4.Expand(simple_heuristic)
+
+	// Compute the number of nodes in the result
+	if len(result) != 0 {
+		t.Errorf(
+			"expected for expansion to create 0 nodes, received %v.",
+			len(result),
+		)
+	}
+
+}
+
+/*
+TestPlanningNode_Expand2
+Description:
+
+	This function tests that a node that is connected to
+	three other nodes in the graph returns three planning
+	nodes in the result of the expand function.
+*/
+func TestPlanningNode_Expand2(t *testing.T) {
+	// Setup Graph
+	g := positionGraph.NewPositionGraph()
+
+	n1 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{1.0, 2.0}),
+	)
+	n2 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{1.0, 3.0}),
+	)
+	n3 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{2.0, 3.0}),
+	)
+	n4 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{0.0, 0.0}),
+	)
+	n5 := g.AddNodeAt(
+		mat.NewVecDense(2, []float64{-1.0, 0.2}),
+	)
+
+	g.AddEdgeBetween(n1, n2)
+	g.AddEdgeBetween(n1, n3)
+	g.AddEdgeBetween(n1, n4)
+	g.AddEdgeBetween(n3, n5)
+
+	// Setup planning node to expand
+	pn4 := aStar.PlanningNode{
+		Graph:            g,
+		CurrentGraphNode: &n1,
+		PreviousInPlan:   nil,
+		CostToGo:         0.0,
+		HeuristicCost:    0.0,
+	}
+
+	// Setup heuristic
+	goalIdx := n3.ID()
+	simple_heuristic := func(currPN *aStar.PlanningNode) float64 {
+		// Setup
+		currentIdx := currPN.CurrentGraphNode.ID()
+		wu := currPN.Graph
+
+		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+
+		// Algorithm
+		var diff mat.VecDense
+		diff.SubVec(goalNode.Position, currNode.Position)
+		return mat.Norm(&diff, 2) + currPN.CostToGo
+	}
+
+	// Compute expansion
+	result := pn4.Expand(simple_heuristic)
+
+	// Compute the number of nodes in the result
+	if len(result) != 3 {
+		t.Errorf(
+			"expected for expansion to create 0 nodes, received %v.",
+			len(result),
+		)
 	}
 }
