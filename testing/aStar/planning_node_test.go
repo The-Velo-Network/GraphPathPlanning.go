@@ -205,7 +205,7 @@ func TestPlanningNode_UpdateCosts2(t *testing.T) {
 		// Algorithm
 		var diff mat.VecDense
 		diff.SubVec(goalNode.Position, currNode.Position)
-		return mat.Norm(&diff, 2)
+		return mat.Norm(&diff, 2) + currPN.CostToGo
 	}
 
 	// - Create nodes
