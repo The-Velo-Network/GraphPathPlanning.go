@@ -1,7 +1,7 @@
 package aStar_test
 
 import (
-	"github.com/GraphPathPlanning.go/aStar"
+	aStar2 "github.com/GraphPathPlanning.go/algorithms/aStar"
 	"github.com/GraphPathPlanning.go/gppErrors"
 	"github.com/GraphPathPlanning.go/positionGraph"
 	"gonum.org/v1/gonum/mat"
@@ -39,7 +39,7 @@ func TestPlan_FindPlan1(t *testing.T) {
 
 	// Setup Path Planning Heuristic
 	goalIdx := n2.ID()
-	simpleHeuristic := func(currPN *aStar.PlanningNode) float64 {
+	simpleHeuristic := func(currPN *aStar2.PlanningNode) float64 {
 		// Setup
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
@@ -54,7 +54,7 @@ func TestPlan_FindPlan1(t *testing.T) {
 	}
 
 	// Apply Plan method
-	p1, err := aStar.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
+	p1, err := aStar2.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
 	if err != nil {
 		t.Errorf("there was a problem finding the plan: %v", err)
 	}
@@ -94,7 +94,7 @@ func TestPlan_FindPlan2(t *testing.T) {
 
 	// Setup Path Planning Heuristic
 	goalIdx := n2.ID()
-	simpleHeuristic := func(currPN *aStar.PlanningNode) float64 {
+	simpleHeuristic := func(currPN *aStar2.PlanningNode) float64 {
 		// Setup
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
@@ -109,7 +109,7 @@ func TestPlan_FindPlan2(t *testing.T) {
 	}
 
 	// Apply Plan method
-	_, err := aStar.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
+	_, err := aStar2.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
 	if err == nil {
 		t.Errorf("no error was thrown, but one should have been!")
 	} else {
