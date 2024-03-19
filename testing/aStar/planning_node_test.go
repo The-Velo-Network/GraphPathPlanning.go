@@ -162,7 +162,7 @@ func TestPlanningNode_UpdateCosts1(t *testing.T) {
 		// Algorithm
 		var diff mat.VecDense
 		diff.SubVec(goalNode.Position, currNode.Position)
-		return mat.Norm(&diff, 2) + currPN.CostToGo
+		return mat.Norm(&diff, 2)
 	}
 
 	// Algorithm
@@ -174,8 +174,12 @@ func TestPlanningNode_UpdateCosts1(t *testing.T) {
 	}
 
 	// Heursitic Cost should be greater than 0
-	if pn1.HeuristicCost <= 0.0 {
-		t.Errorf("Expected heuristic cost to be greater than 0.0, but got %f", pn1.HeuristicCost)
+	if pn1.Cost() <= pn1.CostToGo {
+		t.Errorf(
+			"expected plan cost to be greater than %v, but got %f",
+			pn1.CostToGo,
+			pn1.Cost(),
+		)
 	}
 
 }
