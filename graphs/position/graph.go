@@ -122,6 +122,10 @@ func (pg *PositionGraph) HasEdgeBetween(from, to int64) bool {
 		if e.From().ID() == from && e.To().ID() == to {
 			return true
 		}
+
+		if e.From().ID() == to && e.To().ID() == from {
+			return true
+		}
 	}
 
 	return false
@@ -153,7 +157,12 @@ Description:
 	Returns the weighted edge between the two nodes with the given IDs.
 */
 func (pg *PositionGraph) WeightedEdge(from, to int64) graph.WeightedEdge {
-	return pg.Edge(from, to).(*PGEdge)
+	edge := pg.Edge(from, to)
+	if edge == nil {
+		return nil
+	}
+	// Otherwise, return position graph edge
+	return edge.(*PGEdge)
 }
 
 /*
@@ -232,7 +241,7 @@ func (pg *PositionGraph) AddNode(n Node) {
 }
 
 /*
-AddNoteAt
+AddNodeAt
 Description:
 
 	Adds a node to the graph at a specific position.
@@ -308,4 +317,40 @@ func (pg *PositionGraph) GetNodeAt(position *mat.VecDense) *Node {
 	}
 
 	return nil
+}
+
+/*
+RemoveNode
+Description:
+
+	Removes the node with the given ID from the graph
+	AND all associated edges.
+*/
+func (pg *PositionGraph) RemoveNode(id int64) {
+	// Remove node
+	delete(pg.nodes, id)
+
+	// Remove edges
+	for i, e := range pg.edges {
+		if e.From().ID() == id || e.To().ID() == id {
+			delete(pg.edges, i)
+		}
+	}
+}
+
+/*
+RemoveEdge
+Description:
+
+	Removes the edge between the two nodes with the given IDs.
+*/
+func (pg *PositionGraph) RemoveEdge(from, to int64) {
+	// Constants
+
+	// Algorithm
+	for i, e := range pg.edges {
+		if e.From().ID() == from && e.To().ID() == to {
+			delete(pg.edges, i)
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package positionGraph_test
+package position_graph_test
 
 import (
 	position_graph "github.com/GraphPathPlanning.go/graphs/position"

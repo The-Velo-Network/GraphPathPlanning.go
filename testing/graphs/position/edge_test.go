@@ -1,4 +1,4 @@
-package positionGraph_test
+package position_graph_test
 
 /*
 edge_test.go
