@@ -102,6 +102,12 @@ func (pg *PositionGraph) From(id int64) graph.Nodes {
 		if e.From().ID() == id {
 			out = append(out, e.To())
 		}
+
+		// e is not a self-loop
+		isASelfLoop := e.From().ID() == e.To().ID()
+		if (e.To().ID() == id) && !isASelfLoop {
+			out = append(out, e.From())
+		}
 	}
 
 	return iterator.NewOrderedNodes(out)

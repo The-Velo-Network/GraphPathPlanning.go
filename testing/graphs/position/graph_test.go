@@ -319,3 +319,37 @@ func TestPositionGraph_GetNodeAt2(t *testing.T) {
 		)
 	}
 }
+
+/*
+TestPositionGraph_RemoveEdge1
+Description:
+
+	Tests that when we remove an edge (the only edge between
+	node 3 and node 4), the From() method later returns zero nodes.
+*/
+func TestPositionGraph_RemoveEdge1(t *testing.T) {
+	// Setup
+	g := CreateTestGraph_ForPositionGraph1()
+	var id1, id2 int64 = 3, 4
+	nFrom1 := g.From(id2).Len()
+	if nFrom1 != 1 {
+		t.Errorf(
+			"expected for from to initially contain %v elements; received %v",
+			1,
+			nFrom1,
+		)
+	}
+
+	// Test remove method
+	g.RemoveEdge(id1, id2)
+
+	// Check the nFrom again
+	if g.From(id2).Len() != nFrom1-1 {
+		t.Errorf(
+			"expected there to be %v nodes connected to %v after edge removal; received %v",
+			nFrom1-1,
+			id2,
+			g.From(id2).Len(),
+		)
+	}
+}
