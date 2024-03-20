@@ -1,4 +1,4 @@
-package positionGraph
+package position_graph
 
 import "gonum.org/v1/gonum/mat"
 

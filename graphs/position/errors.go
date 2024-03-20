@@ -1,4 +1,4 @@
-package positionGraph
+package position_graph
 
 import "fmt"
 

@@ -1,7 +1,7 @@
 package positionGraph_test
 
 import (
-	"github.com/GraphPathPlanning.go/positionGraph"
+	position_graph "github.com/GraphPathPlanning.go/graphs/position"
 	"gonum.org/v1/gonum/mat"
 	"testing"
 )
@@ -19,9 +19,9 @@ Description:
 
 	Creates a simple test graph with six nodes and four edges
 */
-func CreateTestGraph_ForPositionGraph1() *positionGraph.PositionGraph {
+func CreateTestGraph_ForPositionGraph1() *position_graph.PositionGraph {
 	// Constants
-	g := positionGraph.NewPositionGraph()
+	g := position_graph.New()
 
 	// Algorithm
 

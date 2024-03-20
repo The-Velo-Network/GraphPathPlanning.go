@@ -1,9 +1,9 @@
 package aStar_test
 
 import (
-	aStar2 "github.com/GraphPathPlanning.go/algorithms/aStar"
 	"github.com/GraphPathPlanning.go/gppErrors"
-	"github.com/GraphPathPlanning.go/positionGraph"
+	positionGraph2 "github.com/GraphPathPlanning.go/graphs/position"
+	"github.com/GraphPathPlanning.go/planning/aStar"
 	"gonum.org/v1/gonum/mat"
 	"testing"
 )
@@ -26,7 +26,7 @@ Description:
 */
 func TestPlan_FindPlan1(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -39,13 +39,13 @@ func TestPlan_FindPlan1(t *testing.T) {
 
 	// Setup Path Planning Heuristic
 	goalIdx := n2.ID()
-	simpleHeuristic := func(currPN *aStar2.PlanningNode) float64 {
+	simpleHeuristic := func(currPN *aStar.PlanningNode) float64 {
 		// Setup
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense
@@ -54,7 +54,7 @@ func TestPlan_FindPlan1(t *testing.T) {
 	}
 
 	// Apply Plan method
-	p1, err := aStar2.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
+	p1, err := aStar.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
 	if err != nil {
 		t.Errorf("there was a problem finding the plan: %v", err)
 	}
@@ -83,7 +83,7 @@ Description:
 */
 func TestPlan_FindPlan2(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -94,13 +94,13 @@ func TestPlan_FindPlan2(t *testing.T) {
 
 	// Setup Path Planning Heuristic
 	goalIdx := n2.ID()
-	simpleHeuristic := func(currPN *aStar2.PlanningNode) float64 {
+	simpleHeuristic := func(currPN *aStar.PlanningNode) float64 {
 		// Setup
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense
@@ -109,7 +109,7 @@ func TestPlan_FindPlan2(t *testing.T) {
 	}
 
 	// Apply Plan method
-	_, err := aStar2.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
+	_, err := aStar.FindPlan(g, n1.ID(), n2.ID(), simpleHeuristic)
 	if err == nil {
 		t.Errorf("no error was thrown, but one should have been!")
 	} else {

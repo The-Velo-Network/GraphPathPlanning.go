@@ -1,9 +1,9 @@
 package djikstra_test
 
 import (
-	"github.com/GraphPathPlanning.go/algorithms/djikstra"
 	"github.com/GraphPathPlanning.go/gppErrors"
-	"github.com/GraphPathPlanning.go/positionGraph"
+	position_graph "github.com/GraphPathPlanning.go/graphs/position"
+	"github.com/GraphPathPlanning.go/planning/djikstra"
 	"gonum.org/v1/gonum/mat"
 	"testing"
 )
@@ -18,7 +18,7 @@ Description:
 */
 func TestPlan_FindPlan1(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := position_graph.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -59,7 +59,7 @@ Description:
 */
 func TestPlan_FindPlan2(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := position_graph.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),

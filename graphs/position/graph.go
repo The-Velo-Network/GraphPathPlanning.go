@@ -1,4 +1,4 @@
-package positionGraph
+package position_graph
 
 import (
 	"gonum.org/v1/gonum/graph"
@@ -30,12 +30,12 @@ type PositionGraph struct {
 // =======
 
 /*
-NewPositionGraph
+New
 Description:
 
 	Creates a new PositionGraph.
 */
-func NewPositionGraph() *PositionGraph {
+func New() *PositionGraph {
 	// Constants
 
 	// Algorithm
