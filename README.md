@@ -107,13 +107,16 @@ like the `PositionGraph` in `graphs/position`.
 
 ## Related Work
 
+- [gonum/graph/path](https://pkg.go.dev/gonum.org/v1/gonum/graph) by gonum is a great library for
+  working with graphs in Go. We use it as the underlying graph representation in this
+  library.
+- [rdk/motionplan](https://github.com/viamrobotics/rdk/tree/main/motionplan) by [Viam](https://www.viam.com/)
+    contains several motion planning algorithms for robotics applications (like RRT).
+- It appears
+  to have tight integration with the Viam ecosystem of software and so requires your
+  application to be built with that in mind.
 - [paths](https://github.com/SolarLune/paths) by SolarLune is a great
     collection of pathfinding algorithms for 2D grids. (This library is meant to
     be used on arbitrary graphs (not just grids) and can work in any dimension.)
 - [golangGeojsonDjikstra](https://github.com/pitchinnate/golangGeojsonDijkstra) by pitchinnate
     contains an implementation of Djikstra's algorithm for GeoJSON data in databases.
-- [rdk/motionplan](https://github.com/viamrobotics/rdk/tree/main/motionplan) by [Viam](https://www.viam.com/)
-    contains several motion planning algorithms for robotics applications (like RRT).
-  - It appears
-      to have tight integration with the Viam ecosystem of software and so requires your
-      application to be built with that in mind.
