@@ -27,8 +27,8 @@ func (ph *PlanningHeap) Push(x any) {
 
 func (ph *PlanningHeap) Pop() any {
 	//Description:
-	//	Retrieves the element with the lowest HeuristicCost.
-	//	Tries to avoid memor leaks.
+	//	Retrieves the element with the lowest cost.
+	//	Tries to avoid memory leaks.
 
 	//Constants
 
