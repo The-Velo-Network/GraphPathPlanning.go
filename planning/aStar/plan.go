@@ -1,6 +1,7 @@
 package aStar
 
 import (
+	"container/heap"
 	"github.com/GraphPathPlanning.go/gppErrors"
 	"github.com/GraphPathPlanning.go/planningHeap"
 	"gonum.org/v1/gonum/graph"
@@ -52,12 +53,13 @@ func FindPlan(
 	}
 
 	var heap0 planningHeap.PlanningHeap
-	heap0 = append(heap0, pn0)
+	heap.Init(&heap0)
+	heap.Push(&heap0, pn0)
 
 	// Algorithm
 	for len(heap0) > 0 {
 		// Pop the top node off the heap
-		pn := heap0.Pop().(*PlanningNode)
+		pn := heap.Pop(&heap0).(*PlanningNode)
 
 		// If we have reached the end, return the plan
 		if pn.CurrentGraphNode.ID() == end {
@@ -69,7 +71,7 @@ func FindPlan(
 
 		// Add the expanded nodes to the heap
 		for _, newPN := range expandedNodes {
-			heap0.Push(newPN)
+			heap.Push(&heap0, newPN)
 		}
 
 	}
