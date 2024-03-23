@@ -1,8 +1,8 @@
 package aStar_test
 
 import (
-	"github.com/GraphPathPlanning.go/aStar"
-	"github.com/GraphPathPlanning.go/positionGraph"
+	positionGraph2 "github.com/GraphPathPlanning.go/graphs/position"
+	"github.com/GraphPathPlanning.go/planning/aStar"
 	"gonum.org/v1/gonum/floats"
 	"gonum.org/v1/gonum/mat"
 	"math"
@@ -22,9 +22,9 @@ Description:
 
 	Creates a simple test graph for use in these tests.
 */
-func CreateTestGraph2() *positionGraph.PositionGraph {
+func CreateTestGraph2() *positionGraph2.PositionGraph {
 	// Constants
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	// Algorithm
 
@@ -45,9 +45,9 @@ Description:
 
 	Creates a simple test graph for use in these tests.
 */
-func CreateTestGraph_PlanningNodeTest2() *positionGraph.PositionGraph {
+func CreateTestGraph_PlanningNodeTest2() *positionGraph2.PositionGraph {
 	// Constants
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	// Algorithm
 
@@ -156,13 +156,13 @@ func TestPlanningNode_UpdateCosts1(t *testing.T) {
 		currentIdx := currPN.CurrentGraphNode.ID()
 
 		wu := currPN.Graph
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense
 		diff.SubVec(goalNode.Position, currNode.Position)
-		return mat.Norm(&diff, 2) + currPN.CostToGo
+		return mat.Norm(&diff, 2)
 	}
 
 	// Algorithm
@@ -174,8 +174,12 @@ func TestPlanningNode_UpdateCosts1(t *testing.T) {
 	}
 
 	// Heursitic Cost should be greater than 0
-	if pn1.HeuristicCost <= 0.0 {
-		t.Errorf("Expected heuristic cost to be greater than 0.0, but got %f", pn1.HeuristicCost)
+	if pn1.Cost() <= pn1.CostToGo {
+		t.Errorf(
+			"expected plan cost to be greater than %v, but got %f",
+			pn1.CostToGo,
+			pn1.Cost(),
+		)
 	}
 
 }
@@ -199,13 +203,13 @@ func TestPlanningNode_UpdateCosts2(t *testing.T) {
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense
 		diff.SubVec(goalNode.Position, currNode.Position)
-		return mat.Norm(&diff, 2)
+		return mat.Norm(&diff, 2) + currPN.CostToGo
 	}
 
 	// - Create nodes
@@ -256,7 +260,7 @@ Description:
 */
 func TestPlanningNode_Expand1(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -286,8 +290,8 @@ func TestPlanningNode_Expand1(t *testing.T) {
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense
@@ -318,7 +322,7 @@ Description:
 */
 func TestPlanningNode_Expand2(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -357,8 +361,8 @@ func TestPlanningNode_Expand2(t *testing.T) {
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense

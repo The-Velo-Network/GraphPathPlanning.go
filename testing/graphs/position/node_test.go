@@ -1,7 +1,7 @@
-package positionGraph_test
+package position_graph_test
 
 import (
-	"github.com/GraphPathPlanning.go/positionGraph"
+	position_graph "github.com/GraphPathPlanning.go/graphs/position"
 	"gonum.org/v1/gonum/mat"
 	"testing"
 )
@@ -21,7 +21,7 @@ Description:
 */
 func TestNode_ID1(t *testing.T) {
 	// Constants
-	pg := positionGraph.NewPositionGraph()
+	pg := position_graph.New()
 	n := pg.AddNodeAt(
 		mat.NewVecDense(3, []float64{1.0, 2.0, 3.0}),
 	)

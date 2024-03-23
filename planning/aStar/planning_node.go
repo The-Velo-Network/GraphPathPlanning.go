@@ -41,7 +41,7 @@ Description:
 	cost of the previous node and the edge between the previous
 */
 func (pn *PlanningNode) Cost() float64 {
-	return pn.HeuristicCost
+	return pn.CostToGo + pn.HeuristicCost
 }
 
 /*

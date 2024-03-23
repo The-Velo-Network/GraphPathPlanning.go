@@ -1,9 +1,9 @@
 package aStar_test
 
 import (
-	"github.com/GraphPathPlanning.go/aStar"
 	"github.com/GraphPathPlanning.go/gppErrors"
-	"github.com/GraphPathPlanning.go/positionGraph"
+	positionGraph2 "github.com/GraphPathPlanning.go/graphs/position"
+	"github.com/GraphPathPlanning.go/planning/aStar"
 	"gonum.org/v1/gonum/mat"
 	"testing"
 )
@@ -26,7 +26,7 @@ Description:
 */
 func TestPlan_FindPlan1(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -44,8 +44,8 @@ func TestPlan_FindPlan1(t *testing.T) {
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense
@@ -83,7 +83,7 @@ Description:
 */
 func TestPlan_FindPlan2(t *testing.T) {
 	// Setup Graph
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	n1 := g.AddNodeAt(
 		mat.NewVecDense(2, []float64{1.0, 2.0}),
@@ -99,8 +99,8 @@ func TestPlan_FindPlan2(t *testing.T) {
 		currentIdx := currPN.CurrentGraphNode.ID()
 		wu := currPN.Graph
 
-		goalNode := wu.Node(goalIdx).(*positionGraph.Node)
-		currNode := wu.Node(currentIdx).(*positionGraph.Node)
+		goalNode := wu.Node(goalIdx).(*positionGraph2.Node)
+		currNode := wu.Node(currentIdx).(*positionGraph2.Node)
 
 		// Algorithm
 		var diff mat.VecDense

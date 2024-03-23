@@ -1,4 +1,4 @@
-package positionGraph_test
+package position_graph_test
 
 /*
 edge_test.go
@@ -8,7 +8,7 @@ Description:
 */
 
 import (
-	"github.com/GraphPathPlanning.go/positionGraph"
+	positionGraph2 "github.com/GraphPathPlanning.go/graphs/position"
 	"gonum.org/v1/gonum/mat"
 	"testing"
 )
@@ -20,9 +20,9 @@ Description:
 	Creates a simple test graph with four nodes and three edges
 	for use in these tests.
 */
-func CreateTestGraph_ForEdges1() *positionGraph.PositionGraph {
+func CreateTestGraph_ForEdges1() *positionGraph2.PositionGraph {
 	// Constants
-	g := positionGraph.NewPositionGraph()
+	g := positionGraph2.New()
 
 	// Algorithm
 
@@ -116,7 +116,7 @@ Description:
 func TestEdge_Weight1(t *testing.T) {
 	// Constants
 	g := CreateTestGraph_ForEdges1()
-	edge := g.EdgeBetween(0, 1).(*positionGraph.PGEdge)
+	edge := g.EdgeBetween(0, 1).(*positionGraph2.PGEdge)
 
 	// Algorithm
 	if edge.Weight() != 1.0 {
